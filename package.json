@@ -1,0 +1,19 @@
+{
+  "type": "module",
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "description": "Game of life implemented with TDD",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --experimental-vm-modules ./node_modules/.bin/jest",
+    "test:watch": "test --watchAll"
+  },
+  "author": "Joel Hassan",
+  "license": "MIT",
+  "dependencies": {
+    "immer": "^9.0.12"
+  },
+  "devDependencies": {
+    "jest": "^28.1.0"
+  }
+}
