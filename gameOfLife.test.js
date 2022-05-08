@@ -16,6 +16,10 @@ describe('Game of life', () => {
     const patternPath = path + 'gosperglidergun.rle';
     expect(() => gameOfLife.play(patternPath)).toThrow();
   });
+  it('should throw if the number of iterations is less than or equal to 0', () => {
+    const patternPath = path + 'gosperglidergun.rle';
+    expect(() => gameOfLife.play(patternPath, -1)).toThrow();
+  });
 
   it('should be callable with a valid pattern file path and number of iterations as input', () => {
     const spy = jest.spyOn(gameOfLife, 'play');
