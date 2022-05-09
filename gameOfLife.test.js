@@ -10,11 +10,6 @@ describe('Game of life', () => {
   // write integration tests here after testing specific functions
   const path = process.cwd() + '/patterns/';
   describe('play', () => {
-    it('should throw when the pattern file cannot be located', () => {
-      const patternPath = 'nonExistent';
-      const iterations = 2;
-      expect(() => gameOfLife.play(patternPath, iterations)).toThrow();
-    });
     it('should throw if the number of iterations is not provided', () => {
       const patternPath = path + 'gosperglidergun.rle';
       expect(() => gameOfLife.play(patternPath)).toThrow();
@@ -48,18 +43,23 @@ describe('Game of life', () => {
         height: 3,
       });
     });
-  });
-  // describe('Game of life — applyRules', () => {
-  //   it('should ensure any cell with two or three live neighbours survives.', () => {
-  //     const cellGrid = [
-  //       [0, 1, 0],
-  //       [0, 0, 1],
-  //       [1, 1, 1],
-  //     ];
-  //     const resultingGrid = gameOfLife.applyRules(cellGrid);
-  //     expect(resultingGrid).toEqual([
 
-  //     expect(res).toEqual(expectedRes);
-  //   });
-  // });
+    it('should throw when the pattern file cannot be located', () => {
+      const patternPath = 'nonExistent';
+      expect(() => gameOfLife.parseRleFile(patternPath)).toThrow();
+    });
+  });
+
+  describe('convertToGrid', () => {
+    it('should ensure any cell with two or three live neighbours survives.', () => {
+      const pattern = 'bob$2bo$3o!';
+      const resultingGrid = gameOfLife.convertToGrid(pattern);
+      const expectedGrid = [
+        [0, 1, 0],
+        [0, 0, 1],
+        [1, 1, 1],
+      ];
+      expect(resultingGrid).toEqual(expectedGrid);
+    });
+  });
 });
