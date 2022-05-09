@@ -134,4 +134,4 @@ function nthIndex(str, pat, n) {
   return i;
 }
 
-module.exports = { play };
+module.exports = { play, parseRleFile };
