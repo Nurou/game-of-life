@@ -62,6 +62,10 @@ function parseRleFile(patternFilePath) {
     throw new Error(error);
   }
 
+  if (lines.length === 0 || width === undefined || height === undefined) {
+    throw new Error('Invalid RLE file. Lines, width or height is not specified');
+  }
+
   return { lines, width, height };
 }
 

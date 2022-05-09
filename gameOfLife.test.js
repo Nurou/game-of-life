@@ -48,6 +48,11 @@ describe('Game of life', () => {
       const patternPath = 'nonExistent';
       expect(() => gameOfLife.parseRleFile(patternPath)).toThrow();
     });
+
+    it('should throw if necessary data is missing RLE file', () => {
+      const patternPath = path + 'glider_missing_data.rle';
+      expect(() => gameOfLife.parseRleFile(patternPath)).toThrow();
+    });
   });
 
   describe('convertToGrid', () => {
