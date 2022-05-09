@@ -16,9 +16,15 @@ describe('Game of life', () => {
     const patternPath = path + 'gosperglidergun.rle';
     expect(() => gameOfLife.play(patternPath)).toThrow();
   });
-  it('should throw if the number of iterations is less than or equal to 0', () => {
+  it('should throw if the iteration count is less than 0', () => {
     const patternPath = path + 'gosperglidergun.rle';
     expect(() => gameOfLife.play(patternPath, -1)).toThrow();
+  });
+  it('should not modify the original RLE pattern if iteration count is 0', () => {
+    const patternPath = path + 'glider.rle';
+    const expectedRes = 'bob$2bo$3o!';
+    const res = gameOfLife.play(patternPath, 0);
+    expect(res).toEqual(expectedRes);
   });
 
   it('should be callable with a valid pattern file path and number of iterations as input', () => {
