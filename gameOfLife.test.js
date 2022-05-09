@@ -56,7 +56,7 @@ describe('Game of life', () => {
   });
 
   describe('convertToGrid', () => {
-    it('should ensure any cell with two or three live neighbours survives.', () => {
+    it('correctly converts pattern to a grid', () => {
       const pattern = 'bob$2bo$3o!';
       const resultingGrid = gameOfLife.convertToGrid(pattern);
       const expectedGrid = [
@@ -67,4 +67,17 @@ describe('Game of life', () => {
       expect(resultingGrid).toEqual(expectedGrid);
     });
   });
+
+  // describe('applyRules', () => {
+  //   it('should ensure any cell with two or three live neighbours survives', () => {
+  //     const initialGrid = [
+  //       [0, 1, 0],
+  //       [0, 0, 1],
+  //       [1, 1, 1],
+  //     ];
+  //     const resultingGrid = gameOfLife.applyRules(initialGrid);
+  //     expect(resultingGrid).toEqual(expectedGrid);
+  //   })
+
+  // });
 });
