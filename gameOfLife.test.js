@@ -5,7 +5,7 @@ Any live cell with two or three live neighbours survives.
 Any dead cell with three live neighbours becomes a live cell.
 All other live cells die in the next generation. Similarly, all other dead cells stay dead.
 */
-describe('Game of life', () => {
+describe('Game of life — play', () => {
   const path = process.cwd() + '/patterns/';
   it('should throw when the pattern file cannot be located', () => {
     const patternPath = 'nonExistent';
@@ -34,4 +34,18 @@ describe('Game of life', () => {
     gameOfLife.play(patternPath, iterations);
     expect(spy).toBeCalledWith(patternPath, iterations);
   });
+
+  // describe('Game of life — applyRules', () => {
+  //   it('should ensure any cell with two or three live neighbours survives.', () => {
+  //     const cellGrid = [
+  //       [0, 1, 0],
+  //       [0, 0, 1],
+  //       [1, 1, 1],
+  //     ];
+  //     const resultingGrid = gameOfLife.applyRules(cellGrid);
+  //     expect(resultingGrid).toEqual([
+
+  //     expect(res).toEqual(expectedRes);
+  //   });
+  // });
 });

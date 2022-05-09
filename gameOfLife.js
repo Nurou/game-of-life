@@ -15,26 +15,37 @@ function play(patternFile, iterations) {
     throw new Error('Iterations must be greater than 0');
   }
 
-  const cellGrid = decompress(patternFile);
+  const { lines } = parseRleFile(patternFile);
+
+  // combine pattern lines into string
+  let rlePatternStr = '';
+  for (let i = 0; i < lines.length; i++) {
+    rlePatternStr += lines[i];
+  }
+
+  const cellGrid = convertToGrid(rlePatternStr);
 
   // apply rules to grid
   for (let i = 0; i < iterations; i++) {
     // magic happens here
+    // applyRules(cellGrid);
   }
 
   return recompress(cellGrid);
 }
-
 /**
- * Decompresses the pattern file into a 2D grid of cells.
- * @param {string} patternFile The name of the pattern file.
+ * Parses the RLE pattern file and returns the lines of the file,
+ * along with specified width and height of bounding box
+ * @param {string} patternFilePath
+ * @returns {object}
  */
-function decompress(patternFile) {
+function parseRleFile(patternFilePath) {
   const lines = [];
+  let width, height;
 
   try {
     require('fs')
-      .readFileSync(patternFile, 'utf-8')
+      .readFileSync(patternFilePath, 'utf-8')
       .split(/\r?\n/)
       .forEach(function (line) {
         if (line[0] === '#') return;
@@ -51,12 +62,14 @@ function decompress(patternFile) {
     throw new Error(error);
   }
 
-  // combine pattern lines into string
-  let patternStr = '';
-  for (let i = 0; i < lines.length; i++) {
-    patternStr += lines[i];
-  }
+  return { lines, width, height };
+}
 
+/**
+ * Decompresses the pattern string into a 2D grid of cells.
+ * @param {string} patternFile The name of the pattern file.
+ */
+function convertToGrid(patternStr) {
   // grid representation of pattern
   const cellGrid = [];
 
