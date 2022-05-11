@@ -56,13 +56,16 @@ describe('Game of life', () => {
   });
 
   describe('convertToGrid', () => {
-    it('correctly converts pattern to a grid', () => {
+    it('correctly converts pattern to a padded grid', () => {
       const pattern = 'bob$2bo$3o!';
       const resultingGrid = gameOfLife.convertToGrid(pattern);
+
       const expectedGrid = [
-        [0, 1, 0],
-        [0, 0, 1],
-        [1, 1, 1],
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
       ];
       expect(resultingGrid).toEqual(expectedGrid);
     });
