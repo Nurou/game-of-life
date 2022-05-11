@@ -1,5 +1,4 @@
-const fs = require('fs');
-const readline = require('readline');
+const { default: produce } = require('immer');
 
 /**
  * Returns the pattern in its final form in RLE format.
@@ -15,7 +14,7 @@ function play(patternFile, iterations) {
     throw new Error('Iterations must be greater than 0');
   }
 
-  const { lines } = parseRleFile(patternFile);
+  const { lines, width, height } = parseRleFile(patternFile);
 
   // combine pattern lines into string
   let rlePatternStr = '';
@@ -28,7 +27,7 @@ function play(patternFile, iterations) {
   // apply rules to grid
   for (let i = 0; i < iterations; i++) {
     // magic happens here
-    // applyRules(cellGrid);
+    applyRules(cellGrid, width, height);
   }
 
   return recompress(cellGrid);
@@ -124,6 +123,53 @@ function convertToGrid(patternStr) {
   return cellGrid;
 }
 
+/**
+ *
+ * @param {array} cellGrid 2D array of cells
+ * @returns {array} cellGrid with game rules applied
+ */
+function applyRules(cellGrid, width, height) {
+  // define 8 operations based on 8 neighbor locations
+  let neighborLocationOffsets = [
+    [0, 1],
+    [0, -1],
+    [1, -1],
+    [1, 0],
+    [1, 1],
+    [-1, 1],
+    [-1, 0],
+    [-1, -1],
+  ];
+
+  const newGrid = [...cellGrid];
+
+  for (let row = 0; row < height; row++) {
+    for (let col = 0; col < width; col++) {
+      let livingNeighborCount = 0;
+      const isLiveCell = cellGrid[row]?.[col] === 1;
+
+      // count how many neighbors a given cell has
+      neighborLocationOffsets.forEach(([x, y]) => {
+        const newRow = row + x;
+        const newCol = col + y;
+
+        if (isLiveCell) {
+          if (cellGrid[newRow]?.[newCol] === 1) {
+            livingNeighborCount++;
+          }
+        }
+      });
+
+      if ((isLiveCell && livingNeighborCount === 2) || livingNeighborCount === 3) {
+        newGrid[row][col] = 1;
+      } else {
+        newGrid[row][col] = 0;
+      }
+    }
+  }
+  return newGrid;
+}
+
 function recompress(cellGrid) {
   return 'bob$2bo$3o!';
 }
@@ -138,4 +184,4 @@ function nthIndex(str, pat, n) {
   return i;
 }
 
-module.exports = { play, parseRleFile, convertToGrid };
+module.exports = { play, parseRleFile, convertToGrid, applyRules };
