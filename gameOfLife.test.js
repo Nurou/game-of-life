@@ -81,7 +81,7 @@ describe('Game of life', () => {
         [0, 0, 0, 0, 0],
       ];
 
-      const resultingGrid = gameOfLife.applyRules(initialGrid, 5, 5);
+      const resultingGrid = gameOfLife.applyRules(initialGrid);
 
       expect(resultingGrid).toEqual([
         [0, 0, 0, 0, 0],

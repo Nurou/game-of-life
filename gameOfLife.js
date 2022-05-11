@@ -14,7 +14,7 @@ function play(patternFile, iterations) {
     throw new Error('Iterations must be greater than 0');
   }
 
-  const { lines, width, height } = parseRleFile(patternFile);
+  const { lines } = parseRleFile(patternFile);
 
   // combine pattern lines into string
   let rlePatternStr = '';
@@ -27,7 +27,7 @@ function play(patternFile, iterations) {
   // apply rules to grid
   for (let i = 0; i < iterations; i++) {
     // magic happens here
-    applyRules(cellGrid, width, height);
+    applyRules(cellGrid);
   }
 
   return recompress(cellGrid);
@@ -143,7 +143,7 @@ function convertToGrid(patternStr) {
  * @param {array} cellGrid 2D array of cells
  * @returns {array} cellGrid with game rules applied
  */
-function applyRules(cellGrid, width, height) {
+function applyRules(cellGrid) {
   // define 8 operations based on 8 neighbor locations
   let neighborLocationOffsets = [
     [0, 1],
@@ -158,8 +158,8 @@ function applyRules(cellGrid, width, height) {
 
   const newGrid = [...cellGrid];
 
-  for (let row = 0; row < height; row++) {
-    for (let col = 0; col < width; col++) {
+  for (let row = 0; row < cellGrid.length; row++) {
+    for (let col = 0; col < cellGrid[0].length; col++) {
       let livingNeighborCount = 0;
       const isLiveCell = cellGrid[row]?.[col] === 1;
 
