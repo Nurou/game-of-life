@@ -10,7 +10,8 @@
   "author": "Joel Hassan",
   "license": "MIT",
   "dependencies": {
-    "immer": "^9.0.12"
+    "immer": "^9.0.12",
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "jest": "^28.1.0"
