@@ -25,6 +25,7 @@ function play(patternFile, iterations) {
   const cellGrid = convertToGrid(rlePatternStr);
 
   // apply rules to grid
+  // TODO: apply iterations
   for (let i = 0; i < iterations; i++) {
     // magic happens here
     applyRules(cellGrid);
@@ -209,11 +210,13 @@ function cropGrid(cellGrid) {
   let croppedGrid = _.cloneDeep(cellGrid);
 
   // remove any empty rows
-  croppedGrid.forEach((row, i) => {
+  for (i = 0; i < croppedGrid.length; i++) {
+    row = croppedGrid[i];
     if (row.every((cell) => cell === 0)) {
       croppedGrid.splice(i, 1);
+      i--; //decrement
     }
-  });
+  }
 
   // for the remainder of rows,
   // if both the first and last cells are dead, then remove those cells

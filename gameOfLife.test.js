@@ -94,16 +94,16 @@ describe('Game of life', () => {
     it('removes all cells exceeding bounding box dimensions', () => {
       const initialGrid = [
         [0, 0, 0, 0, 0],
-        [0, 0, 1, 0, 0],
-        [0, 0, 0, 1, 0],
-        [0, 1, 1, 1, 0],
         [0, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0],
+        [0, 0, 1, 1, 0],
+        [0, 0, 1, 0, 0],
       ];
 
       const expectedGrid = [
+        [1, 0, 1],
+        [0, 1, 1],
         [0, 1, 0],
-        [0, 0, 1],
-        [1, 1, 1],
       ];
 
       const resultingGrid = gameOfLife.cropGrid(initialGrid);
@@ -231,7 +231,7 @@ describe('Game of life', () => {
       ]);
     });
 
-    describe.skip('when further iterations are run', () => {
+    describe('when further iterations are run', () => {
       it('results in a correctly transformed grid ', () => {
         const initialGrid = [
           [0, 0, 0, 0, 0],
@@ -241,7 +241,7 @@ describe('Game of life', () => {
           [0, 0, 0, 0, 0],
         ];
 
-        const firstIterationResult = gameOfLife.applyRules(initialGrid);
+        let firstIterationResult = gameOfLife.applyRules(initialGrid);
 
         expect(firstIterationResult).toEqual([
           [0, 0, 0, 0, 0],
@@ -251,21 +251,17 @@ describe('Game of life', () => {
           [0, 0, 1, 0, 0],
         ]);
 
-        // 1st solution:
-        // crop the result to
-        // get array with bounding box constraints, e.g. 3x3
-
-        // re-pad the array as in convertToGrid
-        // repeat for each iteration
+        firstIterationResult = gameOfLife.cropGrid(firstIterationResult);
+        firstIterationResult = gameOfLife.padGrid(firstIterationResult);
 
         const secondIterationResult = gameOfLife.applyRules(firstIterationResult);
 
         expect(secondIterationResult).toEqual([
           [0, 0, 0, 0, 0],
-          [0, 0, 0, 0, 0],
+          [0, 0, 0, 1, 0],
           [0, 1, 0, 1, 0],
           [0, 0, 1, 1, 0],
-          [0, 0, 1, 0, 0],
+          [0, 0, 0, 0, 0],
         ]);
       });
     });
