@@ -200,6 +200,12 @@ function padGrid(cellGrid) {
 
   return paddedCellGrid;
 }
+/**
+ *
+ * @param {array} cellGrid
+ * @returns cellGrid that has been cropped to bounding box dimensions
+ */
+function cropGrid(cellGrid, width, height) {}
 
 function recompress(cellGrid) {
   return 'bob$2bo$3o!';
@@ -215,4 +221,4 @@ function nthIndex(str, pat, n) {
   return i;
 }
 
-module.exports = { play, parseRleFile, convertToGrid, applyRules };
+module.exports = { play, parseRleFile, convertToGrid, applyRules, padGrid };

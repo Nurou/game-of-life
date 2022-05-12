@@ -71,6 +71,26 @@ describe('Game of life', () => {
     });
   });
 
+  describe('padGrid', () => {
+    it('pads a grid with an extra top and bottom row and right and left column of dead cells', () => {
+      const initialGrid = [
+        [0, 1, 0],
+        [0, 0, 1],
+        [1, 1, 1],
+      ];
+      const expectedGrid = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
+      ];
+
+      const resultingGrid = gameOfLife.padGrid(initialGrid);
+      expect(resultingGrid).toEqual(expectedGrid);
+    });
+  });
+
   describe('applyRules', () => {
     it('ensures any live cell with two or three live neighbours survives', () => {
       const initialGrid = [
@@ -189,6 +209,45 @@ describe('Game of life', () => {
         [0, 0, 1, 1, 0],
         [0, 0, 1, 0, 0],
       ]);
+    });
+
+    describe.skip('when further iterations are run', () => {
+      it('results in a correctly transformed grid ', () => {
+        const initialGrid = [
+          [0, 0, 0, 0, 0],
+          [0, 0, 1, 0, 0],
+          [0, 0, 0, 1, 0],
+          [0, 1, 1, 1, 0],
+          [0, 0, 0, 0, 0],
+        ];
+
+        const firstIterationResult = gameOfLife.applyRules(initialGrid);
+
+        expect(firstIterationResult).toEqual([
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 1, 0, 1, 0],
+          [0, 0, 1, 1, 0],
+          [0, 0, 1, 0, 0],
+        ]);
+
+        // 1st solution:
+        // crop the result to
+        // get array with bounding box constraints, e.g. 3x3
+
+        // re-pad the array as in convertToGrid
+        // repeat for each iteration
+
+        const secondIterationResult = gameOfLife.applyRules(firstIterationResult);
+
+        expect(secondIterationResult).toEqual([
+          [0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0],
+          [0, 1, 0, 1, 0],
+          [0, 0, 1, 1, 0],
+          [0, 0, 1, 0, 0],
+        ]);
+      });
     });
   });
 });
