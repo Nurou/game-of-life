@@ -10,22 +10,22 @@ describe('Game of life', () => {
   // write integration tests here after testing specific functions
   const path = process.cwd() + '/patterns/';
   describe('play', () => {
-    it('should throw if the number of iterations is not provided', () => {
+    it('throws if the number of iterations is not provided', () => {
       const patternPath = path + 'gosperglidergun.rle';
       expect(() => gameOfLife.play(patternPath)).toThrow();
     });
-    it('should throw if the iteration count is less than 0', () => {
+    it('throws if the iteration count is less than 0', () => {
       const patternPath = path + 'gosperglidergun.rle';
       expect(() => gameOfLife.play(patternPath, -1)).toThrow();
     });
-    it('should not modify the original RLE pattern if iteration count is 0', () => {
+    it('does not modify the original RLE pattern if iteration count is 0', () => {
       const patternPath = path + 'glider.rle';
       const expectedRes = 'bob$2bo$3o!';
       const res = gameOfLife.play(patternPath, 0);
       expect(res).toEqual(expectedRes);
     });
 
-    it('should be callable with a valid pattern file path and number of iterations as input', () => {
+    it('is callable with a valid pattern file path and number of iterations as input', () => {
       const spy = jest.spyOn(gameOfLife, 'play');
       const patternPath = path + 'gosperglidergun.rle';
       const iterations = 2;
@@ -34,7 +34,7 @@ describe('Game of life', () => {
     });
   });
   describe('parseRleFile', () => {
-    it('should return the correct data and lines when a valid file path is provided', () => {
+    it('returns the correct data and lines when a valid file path is provided', () => {
       const patternPath = path + 'glider.rle';
       const res = gameOfLife.parseRleFile(patternPath);
       expect(res).toEqual({
@@ -44,12 +44,12 @@ describe('Game of life', () => {
       });
     });
 
-    it('should throw when the pattern file cannot be located', () => {
+    it('throws when the pattern file cannot be located', () => {
       const patternPath = 'nonExistent';
       expect(() => gameOfLife.parseRleFile(patternPath)).toThrow();
     });
 
-    it('should throw if necessary data is missing RLE file', () => {
+    it('throws if necessary data is missing RLE file', () => {
       const patternPath = path + 'glider_missing_data.rle';
       expect(() => gameOfLife.parseRleFile(patternPath)).toThrow();
     });
@@ -72,7 +72,7 @@ describe('Game of life', () => {
   });
 
   describe('applyRules', () => {
-    it('should ensure any live cell with two or three live neighbours survives', () => {
+    it('ensures any live cell with two or three live neighbours survives', () => {
       const initialGrid = [
         [0, 0, 0, 0, 0],
         [0, 0, 1, 0, 0],
@@ -93,7 +93,7 @@ describe('Game of life', () => {
         expect(resultingGrid[row][col]).toEqual(1);
       });
     });
-    it('should ensure any dead cell with three live neighbours becomes a live cell.', () => {
+    it('ensures any dead cell with three live neighbours becomes a live cell.', () => {
       const initialGrid = [
         [0, 0, 0, 0, 0],
         [0, 0, 1, 0, 0],
@@ -114,7 +114,7 @@ describe('Game of life', () => {
       });
     });
 
-    it('should ensure that live cells without 2 or 3 living neighbors die in the next generation', () => {
+    it('ensures that live cells without 2 or 3 living neighbors die in the next generation', () => {
       const initialGrid = [
         [0, 0, 0, 0, 0],
         [0, 0, 1, 0, 0],
@@ -134,7 +134,7 @@ describe('Game of life', () => {
         expect(resultingGrid[row][col]).toEqual(0);
       });
     });
-    it('should ensure that all dead cells without 3 living neighbors remain dead', () => {
+    it('ensures that all dead cells without 3 living neighbors remain dead', () => {
       const initialGrid = [
         [0, 0, 0, 0, 0],
         [0, 0, 1, 0, 0],
