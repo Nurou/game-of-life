@@ -170,5 +170,25 @@ describe('Game of life', () => {
         expect(resultingGrid[row][col]).toEqual(0);
       });
     });
+
+    it('results in a correctly transformed grid by applying all the rules', () => {
+      const initialGrid = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
+      ];
+
+      const resultingGrid = gameOfLife.applyRules(initialGrid);
+
+      expect(resultingGrid).toEqual([
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 1, 0, 1, 0],
+        [0, 0, 1, 1, 0],
+        [0, 0, 1, 0, 0],
+      ]);
+    });
   });
 });
