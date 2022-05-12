@@ -81,15 +81,37 @@ describe('Game of life', () => {
         [0, 0, 0, 0, 0],
       ];
 
+      const shouldSurvive = [
+        [2, 3],
+        [3, 2],
+        [3, 3],
+      ];
+
       const resultingGrid = gameOfLife.applyRules(initialGrid);
 
-      expect(resultingGrid).toEqual([
+      shouldSurvive.forEach(([row, col]) => {
+        expect(resultingGrid[row][col]).toEqual(1);
+      });
+    });
+    it('should ensure any dead cell with three live neighbours becomes a live cell.', () => {
+      const initialGrid = [
         [0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
         [0, 0, 0, 1, 0],
-        [0, 0, 1, 1, 0],
+        [0, 1, 1, 1, 0],
         [0, 0, 0, 0, 0],
-      ]);
+      ];
+
+      const shouldSurvive = [
+        [2, 1],
+        [4, 2],
+      ];
+
+      const resultingGrid = gameOfLife.applyRules(initialGrid);
+
+      shouldSurvive.forEach(([row, col]) => {
+        expect(resultingGrid[row][col]).toEqual(1);
+      });
     });
   });
 });

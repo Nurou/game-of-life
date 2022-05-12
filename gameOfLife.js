@@ -1,4 +1,4 @@
-const { default: produce } = require('immer');
+const _ = require('lodash');
 
 /**
  * Returns the pattern in its final form in RLE format.
@@ -146,20 +146,23 @@ function convertToGrid(patternStr) {
 function applyRules(cellGrid) {
   // define 8 operations based on 8 neighbor locations
   let neighborLocationOffsets = [
+    [-1, 1],
+    [-1, 0],
+    [-1, -1],
     [0, 1],
     [0, -1],
     [1, -1],
     [1, 0],
     [1, 1],
-    [-1, 1],
-    [-1, 0],
-    [-1, -1],
   ];
 
-  const newGrid = [...cellGrid];
+  const newGrid = _.cloneDeep(cellGrid);
 
-  for (let row = 0; row < cellGrid.length; row++) {
-    for (let col = 0; col < cellGrid[0].length; col++) {
+  const rows = cellGrid.length;
+  const cols = cellGrid[0].length;
+
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
       let livingNeighborCount = 0;
       const isLiveCell = cellGrid[row]?.[col] === 1;
 
@@ -168,20 +171,25 @@ function applyRules(cellGrid) {
         const newRow = row + x;
         const newCol = col + y;
 
-        if (isLiveCell) {
-          if (cellGrid[newRow]?.[newCol] === 1) {
+        if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
+          if (cellGrid[newRow][newCol] === 1) {
             livingNeighborCount++;
           }
         }
       });
 
-      if ((isLiveCell && livingNeighborCount === 2) || livingNeighborCount === 3) {
+      if (isLiveCell && (livingNeighborCount === 2 || livingNeighborCount === 3)) {
+        // Any live cell with two or three live neighbours survives.
+        newGrid[row][col] = 1;
+      } else if (!isLiveCell && livingNeighborCount === 3) {
+        //Any dead cell with three live neighbours becomes a live cell
         newGrid[row][col] = 1;
       } else {
         newGrid[row][col] = 0;
       }
     }
   }
+
   return newGrid;
 }
 
