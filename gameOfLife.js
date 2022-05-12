@@ -121,21 +121,7 @@ function convertToGrid(patternStr) {
   });
 
   // add padding cells
-  let paddedCellGrid = [...cellGrid];
-  paddedCellGrid = cellGrid.map((row) => {
-    // pad each row with dead cells
-    const newRow = [...row];
-    newRow.push(0);
-    newRow.unshift(0);
-    return newRow;
-  });
-
-  // pad top and bottom of grid with dead cell rows
-  const rowOfDeadCells = new Array(paddedCellGrid[0].length).fill(0);
-  paddedCellGrid.unshift(rowOfDeadCells);
-  paddedCellGrid.push(rowOfDeadCells);
-
-  return paddedCellGrid;
+  return padGrid(cellGrid);
 }
 
 /**
@@ -190,6 +176,29 @@ function applyRules(cellGrid) {
   }
 
   return newGrid;
+}
+
+/**
+ *
+ * @param {array} cellGrid
+ * @returns cellGrid with an extra row and column of dead cells
+ * on each side
+ */
+function padGrid(cellGrid) {
+  let paddedCellGrid = cellGrid.map((row) => {
+    // pad each row with dead cells
+    const newRow = [...row];
+    newRow.push(0);
+    newRow.unshift(0);
+    return newRow;
+  });
+
+  // pad top and bottom of grid with dead cell rows
+  const rowOfDeadCells = new Array(paddedCellGrid[0].length).fill(0);
+  paddedCellGrid.unshift(rowOfDeadCells);
+  paddedCellGrid.push(rowOfDeadCells);
+
+  return paddedCellGrid;
 }
 
 function recompress(cellGrid) {
