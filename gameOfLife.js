@@ -205,7 +205,27 @@ function padGrid(cellGrid) {
  * @param {array} cellGrid
  * @returns cellGrid that has been cropped to bounding box dimensions
  */
-function cropGrid(cellGrid, width, height) {}
+function cropGrid(cellGrid) {
+  let croppedGrid = _.cloneDeep(cellGrid);
+
+  // remove any empty rows
+  croppedGrid.forEach((row, i) => {
+    if (row.every((cell) => cell === 0)) {
+      croppedGrid.splice(i, 1);
+    }
+  });
+
+  // for the remainder of rows,
+  // if both the first and last cells are dead, then remove those cells
+  croppedGrid.forEach((row, i) => {
+    if (row[0] === 0 && row[row.length - 1] === 0) {
+      croppedGrid[i].splice(0, 1);
+      croppedGrid[i].pop();
+    }
+  });
+
+  return croppedGrid;
+}
 
 function recompress(cellGrid) {
   return 'bob$2bo$3o!';
@@ -221,4 +241,4 @@ function nthIndex(str, pat, n) {
   return i;
 }
 
-module.exports = { play, parseRleFile, convertToGrid, applyRules, padGrid };
+module.exports = { play, parseRleFile, convertToGrid, applyRules, padGrid, cropGrid };

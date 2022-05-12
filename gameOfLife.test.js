@@ -90,6 +90,26 @@ describe('Game of life', () => {
       expect(resultingGrid).toEqual(expectedGrid);
     });
   });
+  describe('cropGrid', () => {
+    it('removes all cells exceeding bounding box dimensions', () => {
+      const initialGrid = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
+      ];
+
+      const expectedGrid = [
+        [0, 1, 0],
+        [0, 0, 1],
+        [1, 1, 1],
+      ];
+
+      const resultingGrid = gameOfLife.cropGrid(initialGrid);
+      expect(resultingGrid).toEqual(expectedGrid);
+    });
+  });
 
   describe('applyRules', () => {
     it('ensures any live cell with two or three live neighbours survives', () => {
