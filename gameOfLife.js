@@ -171,10 +171,9 @@ function applyRules(cellGrid) {
         const newRow = row + x;
         const newCol = col + y;
 
-        if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols) {
-          if (cellGrid[newRow][newCol] === 1) {
-            livingNeighborCount++;
-          }
+        // any cells out of bounds are treated as dead
+        if (cellGrid[newRow]?.[newCol] === 1) {
+          livingNeighborCount++;
         }
       });
 
