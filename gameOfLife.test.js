@@ -113,5 +113,26 @@ describe('Game of life', () => {
         expect(resultingGrid[row][col]).toEqual(1);
       });
     });
+
+    it('should ensure that live cells without 2 or 3 neighbors die in the next generation', () => {
+      const initialGrid = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0],
+      ];
+
+      const shouldDie = [
+        [1, 2],
+        [3, 1],
+      ];
+
+      const resultingGrid = gameOfLife.applyRules(initialGrid);
+
+      shouldDie.forEach(([row, col]) => {
+        expect(resultingGrid[row][col]).toEqual(0);
+      });
+    });
   });
 });
