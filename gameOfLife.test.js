@@ -202,4 +202,28 @@ describe('Game of life', () => {
       });
     });
   });
+
+  describe('compressToRle', () => {
+    it('correctly compresses a grid pattern to a RLE pattern', () => {
+      const lightweightSpaceshipRle = 'bo2bo$o4b$o3bo$4o!';
+      const gliderRle = 'bob$2bo$3o!';
+      const spaceshipGrid = [
+        [0, 1, 0, 0, 1],
+        [1, 0, 0, 0, 0],
+        [1, 0, 0, 0, 1],
+        [1, 1, 1, 1, 0],
+      ];
+      const gliderGrid = [
+        [0, 1, 0],
+        [0, 0, 1],
+        [1, 1, 1],
+      ];
+
+      const spaceshipResult = gameOfLife.compressToRle(spaceshipGrid);
+      const gliderResult = gameOfLife.compressToRle(gliderGrid);
+
+      expect(gliderResult).toEqual(gliderRle);
+      expect(spaceshipResult).toEqual(lightweightSpaceshipRle);
+    });
+  });
 });

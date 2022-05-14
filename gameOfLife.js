@@ -31,7 +31,7 @@ function play(patternFile, iterations) {
     applyRules(cellGrid);
   }
 
-  return recompress(cellGrid);
+  return compressToRle(cellGrid);
 }
 /**
  * Parses the RLE pattern file and returns the lines of the file,
@@ -231,8 +231,55 @@ function cropGrid(cellGrid) {
   return croppedGrid;
 }
 
-function recompress(cellGrid) {
-  return 'bob$2bo$3o!';
+function compressToRle(cellGrid) {
+  let rleStr = '';
+  for (let row = 0; row < cellGrid.length; row++) {
+    let tagType = null;
+    let runCount = 0;
+    for (let col = 0; col < cellGrid[0].length; col++) {
+      const cellContent = cellGrid[row][col];
+
+      const tagTypeIsSet = tagType != null;
+      const shouldIncrementRunCount = tagType === cellContent;
+
+      if (!tagTypeIsSet) {
+        tagType = cellContent;
+        runCount++;
+      } else if (shouldIncrementRunCount) {
+        runCount++;
+      } else {
+        rleStr = appendRleStr(rleStr, runCount, tagType);
+        tagType = cellContent;
+        runCount = 1;
+      }
+
+      const isLastCellOnRow = col === cellGrid[row].length - 1;
+      const isLastRow = row === cellGrid.length - 1;
+      const shouldSkip = isLastRow && rleStr.slice(-1) === 'o' && tagType === 0;
+
+      if (shouldSkip) {
+        continue;
+      }
+
+      if (isLastCellOnRow) {
+        rleStr = appendRleStr(rleStr, runCount, tagType);
+      }
+    }
+    if (row === cellGrid.length - 1) {
+      rleStr += '!';
+    } else {
+      rleStr += '$';
+    }
+  }
+
+  return rleStr;
+}
+
+function appendRleStr(str, count, type) {
+  const runCountStr = count === 1 ? '' : count;
+  const tagTypeStr = type === 0 ? 'b' : 'o';
+  const updateStr = runCountStr + tagTypeStr;
+  return str + updateStr;
 }
 
 function nthIndex(str, pat, n) {
@@ -245,4 +292,4 @@ function nthIndex(str, pat, n) {
   return i;
 }
 
-module.exports = { play, parseRleFile, convertToGrid, applyRules, padGrid, cropGrid };
+module.exports = { play, parseRleFile, convertToGrid, applyRules, padGrid, cropGrid, compressToRle };
