@@ -121,8 +121,7 @@ function convertToGrid(patternStr) {
     }
   });
 
-  // add padding cells
-  return padGrid(cellGrid);
+  return cellGrid;
 }
 
 /**
@@ -142,6 +141,8 @@ function applyRules(cellGrid) {
     [1, 0],
     [1, 1],
   ];
+
+  cellGrid = padGrid(cellGrid);
 
   const rows = cellGrid.length;
   const cols = cellGrid[0].length;
@@ -176,7 +177,7 @@ function applyRules(cellGrid) {
     }
   }
 
-  return newGrid;
+  return cropGrid(newGrid);
 }
 
 /**
