@@ -39,6 +39,12 @@ describe('Game of life', () => {
       const res = gameOfLife.play(patternPath, 1);
       expect(res).toEqual(expectedRes);
     });
+    it('returns the correct pattern when run for 2 iterations', () => {
+      const patternPath = path + 'glider.rle';
+      const expectedRes = '2bo$obo$b2o!';
+      const res = gameOfLife.play(patternPath, 2);
+      expect(res).toEqual(expectedRes);
+    });
   });
   describe('parseRleFile', () => {
     it('returns the correct data and lines when a valid file path is provided', () => {
