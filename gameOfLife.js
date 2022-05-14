@@ -143,10 +143,10 @@ function applyRules(cellGrid) {
     [1, 1],
   ];
 
-  const newGrid = _.cloneDeep(cellGrid);
-
   const rows = cellGrid.length;
   const cols = cellGrid[0].length;
+
+  const newGrid = new Array(rows).fill(0).map(() => new Array(cols).fill(0));
 
   for (let row = 0; row < rows; row++) {
     for (let col = 0; col < cols; col++) {
