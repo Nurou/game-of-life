@@ -22,13 +22,11 @@ function play(patternFile, iterations) {
     rlePatternStr += lines[i];
   }
 
-  const cellGrid = convertToGrid(rlePatternStr);
+  let cellGrid = convertToGrid(rlePatternStr);
 
   // apply rules to grid
-  // TODO: apply iterations
   for (let i = 0; i < iterations; i++) {
-    // magic happens here
-    applyRules(cellGrid);
+    cellGrid = applyRules(cellGrid);
   }
 
   return compressToRle(cellGrid);

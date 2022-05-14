@@ -18,7 +18,7 @@ describe('Game of life', () => {
       const patternPath = path + 'gosperglidergun.rle';
       expect(() => gameOfLife.play(patternPath, -1)).toThrow();
     });
-    it('does not modify the original RLE pattern if iteration count is 0', () => {
+    it('does not modify the original RLE pattern when run for 0 iterations', () => {
       const patternPath = path + 'glider.rle';
       const expectedRes = 'bob$2bo$3o!';
       const res = gameOfLife.play(patternPath, 0);
@@ -31,6 +31,13 @@ describe('Game of life', () => {
       const iterations = 2;
       gameOfLife.play(patternPath, iterations);
       expect(spy).toBeCalledWith(patternPath, iterations);
+    });
+
+    it('returns the correct pattern when run for 1 iteration', () => {
+      const patternPath = path + 'glider.rle';
+      const expectedRes = 'obo$b2o$bo!';
+      const res = gameOfLife.play(patternPath, 1);
+      expect(res).toEqual(expectedRes);
     });
   });
   describe('parseRleFile', () => {
