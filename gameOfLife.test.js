@@ -1,13 +1,6 @@
 const gameOfLife = require('./gameOfLife.js');
 
-/* 
-Any live cell with two or three live neighbours survives.
-Any dead cell with three live neighbours becomes a live cell.
-All other live cells die in the next generation. Similarly, all other dead cells stay dead.
-*/
-
 describe('Game of life', () => {
-  // write integration tests here after testing specific functions
   const path = process.cwd() + '/patterns/';
   describe('play', () => {
     it('throws if the number of iterations is not provided', () => {
@@ -50,11 +43,7 @@ describe('Game of life', () => {
     it('returns the correct data and lines when a valid file path is provided', () => {
       const patternPath = path + 'glider.rle';
       const res = gameOfLife.parseRleFile(patternPath);
-      expect(res).toEqual({
-        lines: ['bob$2bo$3o!'],
-        width: 3,
-        height: 3,
-      });
+      expect(res).toEqual(['bob$2bo$3o!']);
     });
 
     it('throws when the pattern file cannot be located', () => {

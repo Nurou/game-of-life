@@ -4,7 +4,7 @@ const _ = require('lodash');
  * Returns the pattern in its final form in RLE format.
  * @param {string} patternFile The name of the pattern file.
  * @param {number} iterations The number of times the game should run.
- * @returns {string} The final state of the game.
+ * @returns {string} The final state of the game in RLE format.
  */
 function play(patternFile, iterations) {
   if (iterations === undefined) {
@@ -14,7 +14,7 @@ function play(patternFile, iterations) {
     throw new Error('Iterations must be greater than 0');
   }
 
-  const { lines } = parseRleFile(patternFile);
+  const lines = parseRleFile(patternFile);
 
   // combine pattern lines into string
   let rlePatternStr = '';
@@ -33,9 +33,9 @@ function play(patternFile, iterations) {
 }
 /**
  * Parses the RLE pattern file and returns the lines of the file,
- * along with specified width and height of bounding box
+ * along with specified width and height of bounding box.
  * @param {string} patternFilePath
- * @returns {object}
+ * @returns {string[]} the parsed pattern as lines.
  */
 function parseRleFile(patternFilePath) {
   const lines = [];
@@ -64,12 +64,13 @@ function parseRleFile(patternFilePath) {
     throw new Error('Invalid RLE file. Lines, width or height is not specified');
   }
 
-  return { lines, width, height };
+  return lines;
 }
 
 /**
  * Decompresses the pattern string into a 2D grid of cells.
- * @param {string} patternFile The name of the pattern file.
+ * @param {string} patternStr The RLE pattern in string format.
+ * @returns {number[][]} The grid formed by parsing the pattern string.
  */
 function convertToGrid(patternStr) {
   // grid representation of pattern
@@ -124,8 +125,8 @@ function convertToGrid(patternStr) {
 
 /**
  *
- * @param {array} cellGrid 2D array of cells
- * @returns {array} cellGrid with game rules applied
+ * @param {number[][]} cellGrid 2D array of cells
+ * @returns {number[][]} cellGrid with the game rules applied
  */
 function applyRules(cellGrid) {
   // define 8 operations based on 8 neighbor locations
@@ -180,8 +181,8 @@ function applyRules(cellGrid) {
 
 /**
  *
- * @param {array} cellGrid
- * @returns cellGrid with an extra row and column of dead cells
+ * @param {number[][]} cellGrid
+ * @returns {number[][]} cellGrid with an extra row and column of dead cells
  * on each side
  */
 function padGrid(cellGrid) {
@@ -202,8 +203,8 @@ function padGrid(cellGrid) {
 }
 /**
  *
- * @param {array} cellGrid
- * @returns cellGrid that has been cropped to bounding box dimensions
+ * @param {number[][]} cellGrid
+ * @returns {number[][]} cellGrid that has been cropped to bounding box dimensions
  */
 function cropGrid(cellGrid) {
   let croppedGrid = _.cloneDeep(cellGrid);
@@ -229,6 +230,11 @@ function cropGrid(cellGrid) {
   return croppedGrid;
 }
 
+/**
+ *
+ * @param {number[][]} cellGrid 2D array
+ * @returns {string} the input grid compressed to RLE string format
+ */
 function compressToRle(cellGrid) {
   let rleStr = '';
   for (let row = 0; row < cellGrid.length; row++) {
@@ -252,8 +258,9 @@ function compressToRle(cellGrid) {
       }
 
       const isLastCellOnRow = col === cellGrid[row].length - 1;
-      const isLastRow = row === cellGrid.length - 1;
-      const shouldSkip = isLastRow && rleStr.slice(-1) === 'o' && tagType === 0;
+      const isFinalRow = row === cellGrid.length - 1;
+      // skip any dead cells at the end of the final row
+      const shouldSkip = isFinalRow && rleStr.slice(-1) === 'o' && tagType === 0;
 
       if (shouldSkip) {
         continue;
